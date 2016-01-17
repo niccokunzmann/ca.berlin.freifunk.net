@@ -19,5 +19,7 @@ class Request(db.Model):
                 self.generation_date
                 )
 
-    def getCertSn(self):
-        return "{}".format(self.cert_sn)
+    @staticmethod
+    def getMaxCertSn():
+        """Returns the highest Serialnumber of the Certifacates issued"""
+        return (db.session.query(db.func.max(Request.cert_sn)).scalar())
