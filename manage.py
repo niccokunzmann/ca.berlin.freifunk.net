@@ -50,8 +50,9 @@ def mail_certificate(id, email):
 def process():
     "Process new certificate requests"
     for request in Request.query.filter(Request.generation_date == None).all():  # noqa
-        prompt = "Do you want to generate a certificate for {}, {} ?"
-        print(prompt.format(request.id, request.email))
+        numsigned = Request.query.filter(Request.email == request.email, Request.generation_date != None).count()
+        prompt = "Do you want to generate a certificate for {}, {}?\n\talready signed to this address: {}"
+        print(prompt.format(request.id, request.email, numsigned))
         print("Type y to continue")
         confirm = input('>')
         if confirm in ['Y', 'y']:
